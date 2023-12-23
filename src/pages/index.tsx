@@ -154,7 +154,7 @@ export default function IndexPage() {
   return (
     <>
       <Head>
-        <title>Prisma Starter</title>
+        <title>Chrono</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="flex h-screen flex-col md:flex-row">
