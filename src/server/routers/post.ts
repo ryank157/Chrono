@@ -59,7 +59,6 @@ export const postRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      console.log('made it here');
       const post = await prisma.post.create({
         data: {
           ...input,
@@ -67,12 +66,10 @@ export const postRouter = router({
           source: 'GITHUB',
         },
       });
-      console.log('broken');
       ee.emit('add', post);
       delete currentlyTyping.Jim;
       ee.emit('isTypingUpdate');
       return post;
-      return input.id;
     }),
 
   isTyping: publicProcedure
