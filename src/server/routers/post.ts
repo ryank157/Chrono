@@ -7,7 +7,7 @@ import { observable } from '@trpc/server/observable';
 import { EventEmitter } from 'events';
 import { prisma } from '../prisma';
 import { z } from 'zod';
-import { authedProcedure, publicProcedure, router } from '../trpc';
+import { publicProcedure, router } from '../trpc';
 
 interface MyEvents {
   add: (data: Post) => void;
@@ -51,40 +51,38 @@ process.on('SIGTERM', () => {
 });
 
 export const postRouter = router({
-  add: authedProcedure
+  add: publicProcedure
     .input(
       z.object({
         id: z.string().uuid().optional(),
         text: z.string().min(1),
       }),
     )
-    .mutation(async ({ input, ctx }) => {
-      const { name } = ctx.user;
-      const post = await prisma.post.create({
-        data: {
-          ...input,
-          name,
-          source: 'GITHUB',
-        },
-      });
-      ee.emit('add', post);
-      delete currentlyTyping[name];
-      ee.emit('isTypingUpdate');
-      return post;
+    .mutation(async ({ input }) => {
+      // const post = await prisma.post.create({
+      //   data: {
+      //     ...input,
+      //     name,
+      //     source: 'GITHUB',
+      //   },
+      // });
+      // ee.emit('add', post);
+      // delete currentlyTyping[name];
+      // ee.emit('isTypingUpdate');
+      // return post;
     }),
 
-  isTyping: authedProcedure
+  isTyping: publicProcedure
     .input(z.object({ typing: z.boolean() }))
-    .mutation(({ input, ctx }) => {
-      const { name } = ctx.user;
-      if (!input.typing) {
-        delete currentlyTyping[name];
-      } else {
-        currentlyTyping[name] = {
-          lastTyped: new Date(),
-        };
-      }
-      ee.emit('isTypingUpdate');
+    .mutation(({ input }) => {
+      // if (!input.typing) {
+      //   delete currentlyTyping[name];
+      // } else {
+      //   currentlyTyping[name] = {
+      //     lastTyped: new Date(),
+      //   };
+      // }
+      // ee.emit('isTypingUpdate');
     }),
 
   infinite: publicProcedure
