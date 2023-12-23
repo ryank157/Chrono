@@ -5,7 +5,6 @@ import { parse } from 'node:url';
 import { WebSocketServer } from 'ws';
 import { applyWSSHandler } from '@trpc/server/adapters/ws';
 
-import { createContext } from './context';
 import { appRouter } from './routers/_app';
 
 const port = parseInt(process.env.PORT || '3000', 10);
@@ -20,7 +19,7 @@ void app.prepare().then(() => {
     await handle(req, res, parsedUrl);
   });
   const wss = new WebSocketServer({ server });
-  const handler = applyWSSHandler({ wss, router: appRouter, createContext });
+  const handler = applyWSSHandler({ wss, router: appRouter });
 
   process.on('SIGTERM', () => {
     console.log('SIGTERM');
