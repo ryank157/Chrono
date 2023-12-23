@@ -59,31 +59,33 @@ export const postRouter = router({
       }),
     )
     .mutation(async ({ input }) => {
-      // const post = await prisma.post.create({
-      //   data: {
-      //     ...input,
-      //     name,
-      //     source: 'GITHUB',
-      //   },
-      // });
-      // ee.emit('add', post);
-      // delete currentlyTyping[name];
-      // ee.emit('isTypingUpdate');
-      // return post;
+      console.log('made it here');
+      const post = await prisma.post.create({
+        data: {
+          ...input,
+          name: 'Jim',
+          source: 'GITHUB',
+        },
+      });
+      console.log('broken');
+      ee.emit('add', post);
+      delete currentlyTyping['Jim'];
+      ee.emit('isTypingUpdate');
+      return post;
       return input.id;
     }),
 
   isTyping: publicProcedure
     .input(z.object({ typing: z.boolean() }))
     .mutation(({ input }) => {
-      // if (!input.typing) {
-      //   delete currentlyTyping[name];
-      // } else {
-      //   currentlyTyping[name] = {
-      //     lastTyped: new Date(),
-      //   };
-      // }
-      // ee.emit('isTypingUpdate');
+      if (!input.typing) {
+        delete currentlyTyping['Jim'];
+      } else {
+        currentlyTyping['Jim'] = {
+          lastTyped: new Date(),
+        };
+      }
+      ee.emit('isTypingUpdate');
       return input.typing;
     }),
 
