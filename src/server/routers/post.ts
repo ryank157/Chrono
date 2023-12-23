@@ -70,6 +70,7 @@ export const postRouter = router({
       // delete currentlyTyping[name];
       // ee.emit('isTypingUpdate');
       // return post;
+      return input.id;
     }),
 
   isTyping: publicProcedure
@@ -83,6 +84,7 @@ export const postRouter = router({
       //   };
       // }
       // ee.emit('isTypingUpdate');
+      return input.typing;
     }),
 
   infinite: publicProcedure
