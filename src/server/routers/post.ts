@@ -69,7 +69,7 @@ export const postRouter = router({
       });
       console.log('broken');
       ee.emit('add', post);
-      delete currentlyTyping['Jim'];
+      delete currentlyTyping.Jim;
       ee.emit('isTypingUpdate');
       return post;
       return input.id;
@@ -79,9 +79,9 @@ export const postRouter = router({
     .input(z.object({ typing: z.boolean() }))
     .mutation(({ input }) => {
       if (!input.typing) {
-        delete currentlyTyping['Jim'];
+        delete currentlyTyping.Jim;
       } else {
-        currentlyTyping['Jim'] = {
+        currentlyTyping.Jim = {
           lastTyped: new Date(),
         };
       }
