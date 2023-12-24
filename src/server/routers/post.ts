@@ -110,7 +110,7 @@ export const postRouter = router({
       if (items.length > take) {
         const prev = items.shift();
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        prevCursor = prev!.createdAt;
+        prevCursor = prev.createdAt;
       }
       return {
         items,
