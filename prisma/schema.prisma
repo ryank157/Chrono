@@ -15,6 +15,8 @@ model Game {
   roundEvent   Event      @relation(fields: [roundEventId], references: [id]) // 1 event per game
   roundEventId Int
   timelines    Timeline[] // Many timelines per game
+  creator      Player     @relation(fields: [creatorId], references: [id])
+  creatorId    Int
 }
 
 model Event {
@@ -40,7 +42,8 @@ model Timeline {
 }
 
 model Player {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  timelines Timeline[] // Many timelines per player
+  id           Int        @id @default(autoincrement())
+  name         String     @unique
+  timelines    Timeline[] // Many timelines per player
+  createdGames Game[]
 }
