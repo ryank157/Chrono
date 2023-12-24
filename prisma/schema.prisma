@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -10,19 +7,40 @@ generator client {
   provider = "prisma-client-js"
 }
 
-enum PosterSource {
-  RAW
-  GITHUB
+model Game {
+  id           Int        @id @default(autoincrement())
+  gameCode     Int
+  isActive     Boolean
+  roundsPlayed Int        @default(0)
+  roundEvent   Event      @relation(fields: [roundEventId], references: [id]) // 1 event per game
+  roundEventId Int
+  timelines    Timeline[] // Many timelines per game
 }
 
-model Post {
-  id     String       @id @default(uuid())
-  name   String
-  text   String
-  source PosterSource @default(RAW)
+model Event {
+  id          Int        @id @default(autoincrement())
+  title       String
+  year        Int
+  description String?
+  month       Int?
+  day         Int?
+  gameEvents  Game[] // Relates to many games
+  timeline    Timeline[] @relation("TimelineToEvent")
+}
 
-  // To return `Date`s intact through the API we need to add data transformers
-  // https://trpc.io/docs/data-transformers
-  createdAt DateTime @unique @default(now())
-  updatedAt DateTime @unique @default(now())
+model Timeline {
+  id              Int     @id @default(autoincrement())
+  ableToWin       Boolean
+  activelyPlaying Boolean
+  player          Player  @relation(fields: [playerId], references: [id]) // 1 player per timeline
+  playerId        Int
+  game            Game    @relation(fields: [gameId], references: [id]) // 1 game per timeline
+  gameId          Int
+  events          Event[] @relation("TimelineToEvent") // Many events per timeline
+}
+
+model Player {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  timelines Timeline[] // Many timelines per player
 }

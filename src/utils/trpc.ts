@@ -12,9 +12,6 @@ import superjson from 'superjson';
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export
 
 const { publicRuntimeConfig } = getConfig();
-console.log('render url');
-console.log(process.env.RENDER_EXTERNAL_URL);
-console.log(publicRuntimeConfig);
 
 const { APP_URL, WS_URL } = publicRuntimeConfig;
 
